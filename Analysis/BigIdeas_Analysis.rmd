@@ -9,22 +9,22 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Analysis of Big Ideas Lab Survey Data
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+This file is to document the analysis process for the Big Ideas Lab survey data. 
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+First I will load the necessary packages for analysis.
 
-```{r cars}
-summary(cars)
+```{r install, echo=FALSE}
+library(tidyverse)
+library(readxl)
+
 ```
 
-## Including Plots
+Then I will load the dataset to be analyzed. 
 
-You can also embed plots, for example:
-
-```{r pressure, echo=FALSE}
-plot(pressure)
+```{r data, echo=FALSE}
+big_ideas_data <- read_excel()
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
