@@ -112,6 +112,6 @@ Plot4 <- ggplot(big_ideas_data_org_f, aes(x=wearable_type)) + geom_bar() + labs(
 Plot7 <- ggplot(big_ideas_data_org_f, aes(x=wearable_type, fill=Highest.level.of.education)) + geom_bar() + labs(x= "Type of Wearable Owned", y="Number of Wearabless Owned", title = "Number of Wearables Types Owned", fill = "Highest Level of Education") + theme_classic()
 Plot8 <- ggplot(big_ideas_data_org_f, aes(x=wearable_type, fill=Employment.Status)) + geom_bar() + labs(x= "Type of Wearable Owned", y="Number of Wearabless Owned", title = "Number of Wearables Types Owned", fill = "Employment Status") + theme_classic()
 
-
+#Breakdown of Wearable Usage
 ```
 
