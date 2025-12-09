@@ -17,3 +17,21 @@ In addition to the provided dataset, I also will use the results of a [survey co
 In an ideal situation, I would be able to look more closely at Bellabeat's internal datasets in order to perform this study. However, I believe these 2 datasets will be sufficient in completing this specific case study. 
 
 ## Data Processing and Cleaning
+### Big Ideas Lab Duke Health Listens Survey Study
+In order to prepare this dataset for analysis, I performed the following steps:
+- Checked for spelling errors in the spreadsheet.
+- Used conditional formatting to look for blank entries in cells pertaining to smart phone ownership, use of smart phone for activity tracking, wearable device ownership, level of education, employment status, gender, ethnicity, and age. I did see visually there are empty cells in other categories such as reasons for not owning a wearable device, use of wearables for activity tracking, and days used for activity tracking; and conditional formatting has helped me identify empty cells in the use of smart phones for activity tracking columns. I did not delete or remove any data with empty cells at this step, but have noted the presence of them.
+- Used conditional formatting to make sure cells in columns where a binary system was used only contain 0 or 1. The survey responses appear to use a binary system for some of the columns such as smart phone and wearable device ownership, where 0 is False and 1 is True. This revealed that the cells under the column Wearable device ownership_Other is a different data type from cells under other similar columns. I’ve changed the data type for the mis-matching column to be a numeric data type. There were no issues in values being anything other than a 0 or 1 in the rest of the columns.
+- Assumed that each row is a unique response to the survey as there are no unique identifiers for each entry.
+- Used the Trim Whitespace tool to remove any extra spaces from the data.
+- Stored the cleaned data in a new sheet within the original spreadsheet called Clean.
+
+### FitBit Fitness Tracker Data
+
+
+## Analysis
+There is a folder within this responsitory storing the analysis process for the project's data. 
+
+## Key Findings
+
+
