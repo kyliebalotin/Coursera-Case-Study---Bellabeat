@@ -15,7 +15,7 @@ This file is to document the analysis process for the Big Ideas Lab survey data.
 
 First I will load the necessary packages for analysis.
 
-```{r install, echo=FALSE}
+```{r install}
 library(tidyverse)
 library(readxl)
 
@@ -23,8 +23,95 @@ library(readxl)
 
 Then I will load the dataset to be analyzed. 
 
-```{r data, echo=FALSE}
-big_ideas_data <- read_excel()
+```{r data}
+big_ideas_data <- read_excel("/Users/kyliebalotin/Downloads/BigIdeasLab_DHL_Survey_Study_1.xlsx", sheet = "Clean")
+
 ```
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Sorting and rearranging some of the dataset
+
+```{r}
+#Changing how the data is organized
+#initiate some of the new column names
+phone_type <- rep("phone", (length(big_ideas_data$Gender)))
+wearable_type <- rep("wearable", (length(big_ideas_data$Gender)))
+
+#Creating a new data attribute listing what kind of phone each submission has
+for (i in 1:length(big_ideas_data$Gender)) {
+    if (big_ideas_data[i, 1]==1) {
+        phone_type[i] = "iPhone"
+    }
+    else if (big_ideas_data[i, 2]==1) {
+        phone_type[i] = "Android"
+    }
+    else if (big_ideas_data[i, 3]==1) {
+        phone_type[i] = "Other"
+    }
+    else if (big_ideas_data[i, 4]==1) {
+        phone_type[i] = "None"
+    }
+}
+
+#Checking that the only options for phone type are: None, iPhone, Android, and Other
+unique(phone_type)
+
+#Creating a new data attribute listing what kind of wearable each submission has
+for (i in 1:length(big_ideas_data$Gender)) {
+    if (big_ideas_data[i, 12]==1) {
+        wearable_type[i] = "None"
+    }
+    else if (big_ideas_data[i, 13]==1) {
+        wearable_type[i] = "Fitbit"
+    }
+    else if (big_ideas_data[i, 14]==1) {
+        wearable_type[i] = "Apple Watch"
+    }
+    else if (big_ideas_data[i, 15]==1) {
+        wearable_type[i] = "Garmin"
+    }
+    else if (big_ideas_data[i, 16]==1) {
+        wearable_type[i] = "Samsung"
+    }
+    else if (big_ideas_data[i, 17]==1) {
+        wearable_type[i] = "Other"
+    }
+}
+
+#Checking that the only options for wearable type are: None, Fitbit, Apple Watch, Garmin, Samsung, and Other
+unique(wearable_type)
+
+#Merge these new columns back into original dataframe
+big_ideas_data_org <- data.frame(big_ideas_data, phone_type, wearable_type)
+View(big_ideas_data_org)
+```
+
+
+Subsetting data for analysis
+
+```{r subsets}
+#Sort by Gender
+big_ideas_data_org_f <- subset.data.frame(big_ideas_data_org, Gender=="Female")
+big_ideas_data_org_m <- subset.data.frame(big_ideas_data_org, Gender=="Male")
+
+
+```
+
+
+```{r plots}
+#Breakdown of Phone Ownership by Gender
+Plot1 <- ggplot(big_ideas_data_org, aes(x=phone_type, group=Gender, fill=Gender)) + geom_bar() + labs(x= "Type of Phone Owned", y="Number of Phones Owned", title = "Number of Phone Types Owned") + theme_classic()
+Plot2 <- ggplot(big_ideas_data_org_f, aes(x=phone_type)) + geom_bar() + labs(x= "Type of Phone Owned", y="Number of Phones Owned", title = "Number of Phone Types Owned (Females)") + theme_classic()
+
+Plot5 <- ggplot(big_ideas_data_org_f, aes(x=phone_type, fill=Highest.level.of.education)) + geom_bar() + labs(x= "Type of Phone Owned", y="Number of Phones Owned", title = "Number of Phone Types Owned (Females)", fill = "Highest Level of Education") + theme_classic()
+Plot6 <- ggplot(big_ideas_data_org_f, aes(x=phone_type, fill=Employment.Status)) + geom_bar() + labs(x= "Type of Phone Owned", y="Number of Phones Owned", title = "Number of Phone Types Owned (Females)", fill = "Employment Status") + theme_classic()
+
+#Breakdown of Wearable Ownership by Gender
+Plot3 <- ggplot(big_ideas_data_org, aes(x=wearable_type, group=Gender, fill=Gender)) + geom_bar() + labs(x= "Type of Wearable Owned", y="Number of Wearabless Owned", title = "Number of Wearables Types Owned") + theme_classic()
+Plot4 <- ggplot(big_ideas_data_org_f, aes(x=wearable_type)) + geom_bar() + labs(x= "Type of Wearable Owned", y="Number of Wearables Owned", title = "Number of Wearables Types Owned (Females)") + theme_classic()
+
+Plot7 <- ggplot(big_ideas_data_org_f, aes(x=wearable_type, fill=Highest.level.of.education)) + geom_bar() + labs(x= "Type of Wearable Owned", y="Number of Wearabless Owned", title = "Number of Wearables Types Owned", fill = "Highest Level of Education") + theme_classic()
+Plot8 <- ggplot(big_ideas_data_org_f, aes(x=wearable_type, fill=Employment.Status)) + geom_bar() + labs(x= "Type of Wearable Owned", y="Number of Wearabless Owned", title = "Number of Wearables Types Owned", fill = "Employment Status") + theme_classic()
+
+
+```
+
