@@ -34,10 +34,12 @@ In order to prepare this dataset for analysis, I used a combination of Google Sh
 - minuteSleep
 - sleepDay
 - weightLogInfo
+
 Then I performed the following cleaning steps in Google Sheets:
 - Trimmed Whitespace in all chosen datasets
 - Filtered looking for blank cells. I only found blank cells in the dailyActivity's column Fat, which I do not plan to use in the Analysis step. 
 - Converted the Date/Time columns of the datasets to Timestamps as I encountered issues when initially trying to upload the data into BigQuery.
+
 After uploading the datasets into BigQuery, I checked all the datasets for the number of unique Id values. I noticed that the dailyActivity and hourlySteps datasets have more unique Ids than expected (>30). This decreases the reliability of the data and leads me to have some skepticism about the quality of the data. I did not delete any data, but I am aware this does not match my expectation of what the data should look like (30 participants = 30 unique Ids). When I checked the dailyActivity and hourlyStep Ids, I saw overlap. The queries used for these steps are saved in the FitBit Analysis folder. 
 
 ## Analysis
