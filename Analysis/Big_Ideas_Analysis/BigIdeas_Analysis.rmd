@@ -109,7 +109,7 @@ colnames(big_ideas_data_org)
 
 The next coding section documents the different calculations I performed on the dataset. I first look at the demographic information about the survey participants to have a better idea about how the sample population might relate to the larger population. 
 
-Then I looked at the survey's responses regarding how participants are using their smart phones and wearables (ex: fitness tracking, sleep monitoring, etc) and reasons why the participants might not own a wearable. I have performed these calculations for the whole survey sample population and the subset of the sample population that identify as female. 
+Then I looked at the survey's responses regarding how participants are using their smart phones and wearables (ex: fitness tracking, sleep monitoring, etc) and reasons why the participants might not own a wearable. I also calculated how many of the participants own phones and wearables. I have performed these calculations for the whole survey sample population and the subset of the sample population that identify as female. 
 ```{r calculations}
 #Find out some demographic information about the survey participants
 
@@ -178,7 +178,7 @@ count_ethnicity
 #Looking at reasons why participants use smartphones/wearables
 #Use of Smart Phones
 activity_phone <- colnames(big_ideas_data_org[5:9])
-activity_phone_simp <- c("No", "Fitness and workout monitoring", "Health tracking", "Sleep monitoring", "Other")
+activity_phone_simp <- c("Not tracking", "Fitness and workout monitoring", "Health tracking", "Sleep monitoring", "Other")
 count_activity_phone <- rep(0, length(activity_phone))
 count_activity_phone_f <- rep(0, length(activity_phone))
 for (i in 1:length(activity_phone)) {
@@ -232,10 +232,33 @@ count_activity_wear
 count_activity_wear_f <- data.frame(activity_wear_simp, count_main_f, count_sec_f, count_notreason_f, count_na_f)
 count_activity_wear_f
     
+
+#Counting Phone and Wearable Ownership
+phones <- unique(phone_type)
+count_phones <- rep(0, length(phones))
+count_phones_f <- rep(0, length(phones))
+
+for (i in 1:length(phones)) {
+    count_phones[i] <- sum(big_ideas_data_org$phone_type==phones[i], na.rm=TRUE)
+    count_phones_f[i] <- sum(big_ideas_data_org_f$phone_type==phones[i], na.rm=TRUE)
+}
+count_ph <- data.frame(phones, count_phones, count_phones_f)
+count_ph
+
+wearables <- unique(wearable_type)
+count_wearables <- rep(0, length(wearables))
+count_wearables_f <- rep(0, length(wearables))
+
+for (i in 1:length(wearables)) {
+    count_wearables[i] <- sum(big_ideas_data_org$wearable_type==wearables[i], na.rm=TRUE)
+    count_wearables_f[i] <- sum(big_ideas_data_org_f$wearable_type==wearables[i], na.rm=TRUE)
+}
+count_w <- data.frame(wearables, count_wearables, count_wearables_f)
+count_w
 ```
 
-Finally, I plot the different calculations in order to show my findings visually. 
-```{r plots}
+Finally, I plot the different calculations in order to show my findings visually. The following code checks that the demographic information does not change too much when the participant population is subset to look at only female-identifying participants. 
+```{r demo_plots, fig.width=20, fig.height=20}
 #Demographic information
 #Pie Chart of Participants' Genders
 demographic_g <- ggplot(count_g, aes(x="", y=count_unique_g, fill=unique_g)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Gender") + scale_fill_brewer(palette = "RdYlBu")#title="Breakdown of Participant Gender")
@@ -264,31 +287,99 @@ demographic_eth <- ggplot(count_ethnicity, aes(x="", y=count_eth, fill=eth_simp)
 #Female population employment status demographics
 demographic_eth_f <- ggplot(count_ethnicity, aes(x="", y=count_eth_f, fill=eth_simp)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Race/Ethnicity") + scale_fill_brewer(palette = "RdYlBu")
 
-grid.arrange(demographic_age, demographic_age_f, 
-             demographic_edu, demographic_edu_f, 
-             demographic_emp, demographic_emp_f, 
-             demographic_eth, demographic_eth_f,
-             nrow=4, ncol=2,
-             top="Demographic Information About Survey Participants", bottom = "Plots in left column represent the whole survey participant population; plots in the right column represent survey participants who identify as female")
+grid.arrange(tableGrob(count_age), demographic_age, demographic_age_f, 
+             tableGrob(count_edu), demographic_edu, demographic_edu_f, 
+             tableGrob(count_emp), demographic_emp, demographic_emp_f, 
+             tableGrob(count_ethnicity), demographic_eth, demographic_eth_f,
+             nrow=4, ncol=3,
+             top="Demographic Information About Survey Participants", bottom = "Plots in middle column represent the whole survey participant population; plots in the right column represent survey participants who identify as female")
 
-#Breakdown of Phone Ownership by Gender
-#Creates a plot of phone ownership where each plot is a different gender
-# Plot <- ggplot(big_ideas_data_org, aes(x=phone_type)) + geom_bar() + labs(x= "Type of Phone Owned", y="Number of Phones Owned", title = "Number of Phone Types Owned") + theme_classic() + facet_wrap(~Gender)
 
-Plot1 <- ggplot(big_ideas_data_org, aes(x=phone_type, group=Gender, fill=Gender)) + geom_bar() + labs(x= "Type of Phone Owned", y="Number of Phones Owned", title = "Number of Phone Types Owned") + theme_classic()
-Plot2 <- ggplot(big_ideas_data_org_f, aes(x=phone_type)) + geom_bar() + labs(x= "Type of Phone Owned", y="Number of Phones Owned", title = "Number of Phone Types Owned (Females)") + theme_classic()
+```
 
-Plot5 <- ggplot(big_ideas_data_org_f, aes(x=phone_type, fill=Highest.level.of.education)) + geom_bar() + labs(x= "Type of Phone Owned", y="Number of Phones Owned", title = "Number of Phone Types Owned (Females)", fill = "Highest Level of Education") + theme_classic()
-Plot6 <- ggplot(big_ideas_data_org_f, aes(x=phone_type, fill=Employment.Status)) + geom_bar() + labs(x= "Type of Phone Owned", y="Number of Phones Owned", title = "Number of Phone Types Owned (Females)", fill = "Employment Status") + theme_classic()
 
-#Breakdown of Wearable Ownership by Gender
-Plot3 <- ggplot(big_ideas_data_org, aes(x=wearable_type, group=Gender, fill=Gender)) + geom_bar() + labs(x= "Type of Wearable Owned", y="Number of Wearabless Owned", title = "Number of Wearables Types Owned") + theme_classic()
-Plot4 <- ggplot(big_ideas_data_org_f, aes(x=wearable_type)) + geom_bar() + labs(x= "Type of Wearable Owned", y="Number of Wearables Owned", title = "Number of Wearables Types Owned (Females)") + theme_classic()
+Then I looked at how the participants are using their phones and wearables, as well as why some participants do not own a wearable device. The majority of the participants own a smart phone, but about half of the participants do not own a wearable. The majority of phone owning participants use their phone for fitness and workout monitoring, followed closely by participants who do not use their phones to track anything. Some participants will use their phones for sleep and health monitoring. 
 
-Plot7 <- ggplot(big_ideas_data_org_f, aes(x=wearable_type, fill=Highest.level.of.education)) + geom_bar() + labs(x= "Type of Wearable Owned", y="Number of Wearabless Owned", title = "Number of Wearables Types Owned", fill = "Highest Level of Education") + theme_classic()
-Plot8 <- ggplot(big_ideas_data_org_f, aes(x=wearable_type, fill=Employment.Status)) + geom_bar() + labs(x= "Type of Wearable Owned", y="Number of Wearabless Owned", title = "Number of Wearables Types Owned", fill = "Employment Status") + theme_classic()
+Among the whole survey participant population, primary reason why participants do not own a wearable is the price (i.e. wearables are too expensive), followed closely by participants not being interested in tracking activity and participants do not have a specific reason why they don't own one. 
 
+The main reason why participants use wearable devices is for fitness and workout monitoring, followed by communication and health tracking, respectively. Sleep monitoring, health tracking, and communication are the top three secondary uses of wearables, respectively. In terms of not being considered a main use of a wearable, fashion was ranked the highest. Music/audiobooks/podcasts, navigation, and other apps are not common features of wearables. 
+
+All of these results do not change when the survey population is filtered to only female-identifying participants. 
+```{r ownership_plots, fig.width=20, fig.height=10}
+#Breakdown of Phone and Wearable Ownership 
+own_phone <- ggplot(big_ideas_data_org, aes(x="", y=phone_type, fill=phone_type)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Phone Type") + scale_fill_brewer(palette = "RdYlBu")
+
+own_phone_f <- ggplot(big_ideas_data_org_f, aes(x="", y=phone_type, fill=phone_type)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Phone Type") + scale_fill_brewer(palette = "RdYlBu")
+
+own_wear <- ggplot(big_ideas_data_org, aes(x="", y=wearable_type, fill=wearable_type)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Wearable Type") + scale_fill_brewer(palette = "RdYlBu")
+
+own_wear_f <- ggplot(big_ideas_data_org_f, aes(x="", y=wearable_type, fill=wearable_type)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Wearable Type") + scale_fill_brewer(palette = "RdYlBu")
+
+grid.arrange(tableGrob(count_ph), own_phone, own_phone_f,
+             tableGrob(count_w), own_wear, own_wear_f, 
+             nrow=2, ncol=3, 
+             top = "Phone and Wearable Ownership", 
+             bottom = "Plots in middlecolumn represent the whole survey participant population; plots in the right column represent survey participants who identify as female")
+
+
+```
+
+
+```{r use_plots, fig.width=20, fig.height=5}
+#Breakdown of Phone Usage
+phone_use <- ggplot(count_activity_ph, aes(x="", y=count_activity_phone, fill=activity_phone_simp)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Smart Phone Activity Tracking") + scale_fill_brewer(palette = "RdYlBu")
+
+phone_use_f <- ggplot(count_activity_ph, aes(x="", y=count_activity_phone_f, fill=activity_phone_simp)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Smart Phone Activity Tracking") + scale_fill_brewer(palette = "RdYlBu")
+
+grid.arrange(tableGrob(count_activity_ph), phone_use, phone_use_f, 
+             nrow=1, ncol=3,
+             top="Phone Activity Tracking by Survey Participants", bottom = "Plots in middle column represent the whole survey participant population; plots in the right column represent survey participants who identify as female")
+
+#Breakdown of Reasons why participants don't own wearables
+wearable_no <- ggplot(count_reason_no, aes(x="", y=count_reason_not, fill=reason_not_simp)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Reasons why wearable isn't owned") + scale_fill_brewer(palette = "RdYlBu")
+
+wearable_no_f <- ggplot(count_reason_no, aes(x="", y=count_reason_not_f, fill=reason_not_simp)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Reasons why wearable isn't owned") + scale_fill_brewer(palette = "RdYlBu")
+
+grid.arrange(tableGrob(count_reason_no), wearable_no, wearable_no_f, 
+             nrow=1, ncol=3,
+             top="Reasons Why Participants Don't Own a Wearable", bottom = "Plots in middle column represent the whole survey participant population; plots in the right column represent survey participants who identify as female")
+
+
+
+
+```
+
+
+
+```{r wear_use_plots, fig.width=20, fig.height=20}
 #Breakdown of Wearable Usage
+wear_use_main <- ggplot(count_activity_wear, aes(x=activity_wear_simp, y=count_main)) + geom_bar(stat="identity") + labs(x= "Activity", y="Number of times activity listed as main use", title = "Main Use of Wearable") + theme_classic() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
 
+wear_use_sec <- ggplot(count_activity_wear, aes(x=activity_wear_simp, count_sec)) + geom_bar(stat="identity") + labs(x= "Activity", y="Number of times activity listed as secondary use", title = "Secondary Use of Wearable") + theme_classic() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+wear_use_not <- ggplot(count_activity_wear, aes(x=activity_wear_simp, count_notreason)) + geom_bar(stat="identity") + labs(x= "Activity", y="Number of times activity listed as not a reason to use", title = "Not a Reason to Use Wearable") + theme_classic() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+wear_use_na <- ggplot(count_activity_wear, aes(x=activity_wear_simp, count_na)) + geom_bar(stat="identity") + labs(x= "Activity", y="Number of times activity listed as not avaliable for device", title = "Activity Was Not Avliable for Wearable") + theme_classic() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+grid.arrange(wear_use_main, wear_use_sec, 
+             wear_use_not, wear_use_na,
+             tableGrob(count_activity_wear), 
+             nrow=3, ncol=2,
+             top="Reasons Why Participants Use a Wearable (Whole Survey Population)")
+
+
+wear_use_main_f <- ggplot(count_activity_wear_f, aes(x=activity_wear_simp, y=count_main)) + geom_bar(stat="identity") + labs(x= "Activity", y="Number of times activity listed as main use", title = "Main Use of Wearable") + theme_classic() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+wear_use_sec_f <- ggplot(count_activity_wear_f, aes(x=activity_wear_simp, count_sec)) + geom_bar(stat="identity") + labs(x= "Activity", y="Number of times activity listed as secondary use", title = "Secondary Use of Wearable") + theme_classic() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+wear_use_not_f <- ggplot(count_activity_wear_f, aes(x=activity_wear_simp, count_notreason)) + geom_bar(stat="identity") + labs(x= "Activity", y="Number of times activity listed as not a reason to use", title = "Not a Reason to Use Wearable") + theme_classic() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+wear_use_na_f <- ggplot(count_activity_wear_f, aes(x=activity_wear_simp, count_na)) + geom_bar(stat="identity") + labs(x= "Activity", y="Number of times activity listed as not avaliable for device", title = "Activity Was Not Avliable for Wearable") + theme_classic() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+grid.arrange(wear_use_main_f, wear_use_sec_f, 
+             wear_use_not_f, wear_use_na_f,
+             tableGrob(count_activity_wear_f), 
+             nrow=3, ncol=2,
+             top="Reasons Why Participants Use a Wearable (Female-Identifying Survey Population)")
 ```
 
