@@ -44,7 +44,7 @@ Then I performed the following cleaning steps in Google Sheets:
 After uploading the datasets into BigQuery, I checked all the datasets for the number of unique Id values. I noticed that the dailyActivity and hourlySteps datasets have more unique Ids than expected (>30). This decreases the reliability of the data and leads me to have some skepticism about the quality of the data. I did not delete any data, but I am aware this does not match my expectation of what the data should look like (30 participants = 30 unique Ids). When I checked the dailyActivity and hourlyStep Ids, I saw overlap. The queries used for these steps are saved in the [FitBit Data folder](https://github.com/kyliebalotin/Coursera-Case-Study---Bellabeat/tree/main/Analysis/FitBit_Data). 
 
 ## Analysis
-There is a folder within this repository storing the analysis process for the project's data. 
+There is a folder within this repository storing the analysis process for the project's data. The Big Ideas survey was analyzed in R, and the documentation for this analysis and subsequent visualizations can be found in the file (BigIdeas_Analysis.html)[file:///Users/kyliebalotin/Github/Coursera-Case-Study---Bellabeat/Analysis/Big_Ideas_Analysis/BigIdeas_Analysis.html]. The FitBit Fitness Tracker data was analyzed using a combination of SQL and R. 
 
 ## Key Findings
 
