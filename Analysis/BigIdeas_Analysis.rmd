@@ -5,7 +5,7 @@ date: "2025-12-09"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
+```{r setup, include=FALSE, echo=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
@@ -15,9 +15,16 @@ This file is to document the analysis process for the Big Ideas Lab survey data.
 
 First I will load the necessary packages for analysis.
 
-```{r install}
+```{r install, include=FALSE}
+#If packages are not installed, run following lines to install the packages
+# install.packages("tidyverse")
+# install.packages("readxl")
+# install.packages("gridExtra")
+
+#Load the packages 
 library(tidyverse)
 library(readxl)
+library(gridExtra)
 
 ```
 
@@ -52,7 +59,7 @@ for (i in 1:length(big_ideas_data$Gender)) {
     }
 }
 
-#Checking that the only options for phone type are: None, iPhone, Android, and Other
+#Checking that the only for phone type are: None, iPhone, Android, and Other
 unique(phone_type)
 
 #Creating a new data attribute listing what kind of wearable each submission has
@@ -77,28 +84,170 @@ for (i in 1:length(big_ideas_data$Gender)) {
     }
 }
 
-#Checking that the only options for wearable type are: None, Fitbit, Apple Watch, Garmin, Samsung, and Other
+#Checking that the options for wearable type are: None, Fitbit, Apple Watch, Garmin, Samsung, and Other
 unique(wearable_type)
 
 #Merge these new columns back into original dataframe
 big_ideas_data_org <- data.frame(big_ideas_data, phone_type, wearable_type)
-View(big_ideas_data_org)
+#View(big_ideas_data_org)
 ```
 
 
-Subsetting data for analysis
+Subset data by gender for analysis
 
-```{r subsets}
+```{r subsets, include=FALSE}
 #Sort by Gender
+#Creates a subset of the data that is only the female survey participants 
 big_ideas_data_org_f <- subset.data.frame(big_ideas_data_org, Gender=="Female")
+
+#Creates a subset of the data that is only the male survey participants 
 big_ideas_data_org_m <- subset.data.frame(big_ideas_data_org, Gender=="Male")
 
+#Creates a subset of the data that is everyone but the female survey participants 
+big_ideas_data_org_nf <- anti_join(big_ideas_data_org, big_ideas_data_org_f)
 
+colnames(big_ideas_data_org)
+
+```
+
+```{r calculations}
+#Find out some demographic information about the survey participants
+
+#Finding number of participants who identify as different genders
+unique_g <- unique(big_ideas_data_org$Gender)
+count_unique_g <- rep(0, length(unique_g))
+for (i in 1:length(unique_g)) {
+    count_unique_g[i] <- sum(big_ideas_data_org$Gender==unique_g[i])
+}
+count_g <- data.frame(unique_g, count_unique_g)
+count_g
+
+#Finding out number of participants in different age groups
+unique_age <- unique(big_ideas_data_org$generation_age_group)
+count_unique_age <- rep(0, length(unique_age))
+
+count_unique_age_f <- rep(0, length(unique_age))
+
+for (i in 1:length(unique_age)) {
+    count_unique_age[i] <- sum(big_ideas_data_org$generation_age_group==unique_age[i])
+    count_unique_age_f[i] <- sum(big_ideas_data_org_f$generation_age_group==unique_age[i])
+}
+count_age <- data.frame(unique_age, count_unique_age, count_unique_age_f)
+count_age
+
+#Level of Education
+unique_edu <- unique(big_ideas_data_org$Highest.level.of.education)
+count_unique_edu <- rep(0, length(unique_edu))
+
+count_unique_edu_f <- rep(0, length(unique_edu))
+
+for (i in 1:length(unique_edu)) {
+    count_unique_edu[i] <- sum(big_ideas_data_org$Highest.level.of.education==unique_edu[i])
+    count_unique_edu_f[i] <- sum(big_ideas_data_org_f$Highest.level.of.education==unique_edu[i])
+}
+count_edu <- data.frame(unique_edu, count_unique_edu, count_unique_edu_f)
+count_edu
+
+#Employment Status
+unique_emp <- unique(big_ideas_data_org$Employment.Status)
+count_unique_emp <- rep(0, length(unique_emp))
+
+count_unique_emp_f <- rep(0, length(unique_emp))
+
+for (i in 1:length(unique_emp)) {
+    count_unique_emp[i] <- sum(big_ideas_data_org$Employment.Status==unique_emp[i])
+    count_unique_emp_f[i] <- sum(big_ideas_data_org_f$Employment.Status==unique_emp[i])
+}
+count_emp <- data.frame(unique_emp, count_unique_emp, count_unique_emp_f)
+count_emp
+
+#Race/Ethnicity
+eth_simp <- c("Black/African American", "Asian/Asian American", "Hispanic", "White/Caucasian", "Other")
+count_eth <- rep(0, length(eth_simp))
+count_eth_f <- rep(0, length(eth_simp))
+
+for (i in 1:length(eth_simp)) {
+    count_eth[i] <- sum(big_ideas_data_org[i+46], na.rm=TRUE)
+    count_eth_f[i] <- sum(big_ideas_data_org_f[i+46], na.rm=TRUE)
+}
+
+count_ethnicity <- data.frame(eth_simp, count_eth, count_eth_f)
+count_ethnicity
+
+#Looking at reasons why participants use smartphones/wearables
+#Use of Smart Phones
+activity_phone <- colnames(big_ideas_data_org[5:9])
+activity_phone_simp <- c("No", "Fitness and workout monitoring", "Health tracking", "Sleep monitoring", "Other")
+count_activity_phone <- rep(0, length(activity_phone))
+count_activity_phone_f <- rep(0, length(activity_phone))
+for (i in 1:length(activity_phone)) {
+    count_activity_phone[i] <- sum(big_ideas_data_org[i+4], na.rm=TRUE)
+    count_activity_phone_f[i] <- sum(big_ideas_data_org_f[i+4], na.rm=TRUE)
+}
+
+count_activity_ph <- data.frame(activity_phone_simp, count_activity_phone, count_activity_phone_f)
+count_activity_ph
+
+#Reasons for not owning a wearable
+reason_not_simp <- c("Don't own one yet", "No particular reason", "Too expensive", "Too hard to read", "Don't trust they work correctly", "Don't know enough", "Not interested in tracking", "Privacy", "Other")
+count_reason_not <- rep(0, length(reason_not_simp))
+count_reason_not_f <- rep(0, length(reason_not_simp))
+for (i in 1:length(reason_not_simp)) {
+    count_reason_not[i] <- sum(big_ideas_data_org[i+17], na.rm=TRUE)
+    count_reason_not_f[i] <- sum(big_ideas_data_org_f[i+17], na.rm=TRUE)
+}
+count_reason_no <- data.frame(reason_not_simp, count_reason_not, count_reason_not_f)
+count_reason_no
+
+#Use of wearable
+activity_wear_simp <- c("Apps", "Fitness and workout monitoring", "Sleep monitoring", "Health tracking", "Communication", "Music/audiobooks/podcasts", "Navigation", "Fashion")
+unique_reasons <- unique(big_ideas_data_org$Wearable.device.usage.by.reason_Apps..social.media..news..etc..)
+unique_reasons
+
+count_main <- rep(0, length(activity_wear_simp))
+count_sec <- rep(0, length(activity_wear_simp))
+count_notreason <- rep(0, length(activity_wear_simp))
+count_na <- rep(0, length(activity_wear_simp))
+
+count_main_f <- rep(0, length(activity_wear_simp))
+count_sec_f <- rep(0, length(activity_wear_simp))
+count_notreason_f <- rep(0, length(activity_wear_simp))
+count_na_f <- rep(0, length(activity_wear_simp))
+for (i in 1:length(activity_wear_simp)) {
+    count_main[i] <- sum(big_ideas_data_org[i+26]=="Main reason", na.rm=TRUE)
+    count_sec[i] <- sum(big_ideas_data_org[i+26]=="Secondary reason", na.rm=TRUE)
+    count_notreason[i] <- sum(big_ideas_data_org[i+26]=="Not a reason", na.rm=TRUE)
+    count_na[i] <- sum(big_ideas_data_org[i+26]=="Not applicable to my device(s)", na.rm=TRUE)
+    
+    count_main_f[i] <- sum(big_ideas_data_org_f[i+26]=="Main reason", na.rm=TRUE)
+    count_sec_f[i] <- sum(big_ideas_data_org_f[i+26]=="Secondary reason", na.rm=TRUE)
+    count_notreason_f[i] <- sum(big_ideas_data_org_f[i+26]=="Not a reason", na.rm=TRUE)
+    count_na_f[i] <- sum(big_ideas_data_org_f[i+26]=="Not applicable to my device(s)", na.rm=TRUE)
+}
+
+count_activity_wear <- data.frame(activity_wear_simp, count_main, count_sec, count_notreason, count_na)
+count_activity_wear
+
+count_activity_wear_f <- data.frame(activity_wear_simp, count_main_f, count_sec_f, count_notreason_f, count_na_f)
+count_activity_wear_f
+    
 ```
 
 
 ```{r plots}
+#Demographic information
+#Pie Chart of Participants' Genders
+demographic_g <- ggplot(count_g, aes(x="", y=count_unique_g, fill=unique_g)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Gender") + scale_fill_brewer(palette = "RdYlBu")#title="Breakdown of Participant Gender")
+
+#Pie Chart of Participants' Ages
+demographic_age <- ggplot(count_age, aes(x="", y=count_unique_age, fill=unique_age)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Age Group") + scale_fill_brewer(palette = "RdYlBu")
+
+grid.arrange(demographic_g, demographic_age, nrow=1, top="Demographic Information About Survey Participants")
+
 #Breakdown of Phone Ownership by Gender
+#Creates a plot of phone ownership where each plot is a different gender
+Plot <- ggplot(big_ideas_data_org, aes(x=phone_type)) + geom_bar() + labs(x= "Type of Phone Owned", y="Number of Phones Owned", title = "Number of Phone Types Owned") + theme_classic() + facet_wrap(~Gender)
+
 Plot1 <- ggplot(big_ideas_data_org, aes(x=phone_type, group=Gender, fill=Gender)) + geom_bar() + labs(x= "Type of Phone Owned", y="Number of Phones Owned", title = "Number of Phone Types Owned") + theme_classic()
 Plot2 <- ggplot(big_ideas_data_org_f, aes(x=phone_type)) + geom_bar() + labs(x= "Type of Phone Owned", y="Number of Phones Owned", title = "Number of Phone Types Owned (Females)") + theme_classic()
 
@@ -113,5 +262,6 @@ Plot7 <- ggplot(big_ideas_data_org_f, aes(x=wearable_type, fill=Highest.level.of
 Plot8 <- ggplot(big_ideas_data_org_f, aes(x=wearable_type, fill=Employment.Status)) + geom_bar() + labs(x= "Type of Wearable Owned", y="Number of Wearabless Owned", title = "Number of Wearables Types Owned", fill = "Employment Status") + theme_classic()
 
 #Breakdown of Wearable Usage
+
 ```
 
