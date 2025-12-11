@@ -24,6 +24,7 @@ In order to prepare this dataset for analysis, I performed the following steps:
 - Used conditional formatting to make sure cells in columns where a binary system was used only contain 0 or 1. The survey responses appear to use a binary system for some of the columns such as smart phone and wearable device ownership, where 0 is False and 1 is True. This revealed that the cells under the column Wearable device ownership_Other is a different data type from cells under other similar columns. I’ve changed the data type for the mis-matching column to be a numeric data type. There were no issues in values being anything other than a 0 or 1 in the rest of the columns.
 - Assumed that each row is a unique response to the survey as there are no unique identifiers for each entry.
 - Used the Trim Whitespace tool to remove any extra spaces from the data.
+- Deleted the duplicate Highest Level of Education column (Highest level of education_0). 
 - Stored the cleaned data in a new sheet within the original spreadsheet called Clean.
 
 ### FitBit Fitness Tracker Data
@@ -43,7 +44,7 @@ Then I performed the following cleaning steps in Google Sheets:
 After uploading the datasets into BigQuery, I checked all the datasets for the number of unique Id values. I noticed that the dailyActivity and hourlySteps datasets have more unique Ids than expected (>30). This decreases the reliability of the data and leads me to have some skepticism about the quality of the data. I did not delete any data, but I am aware this does not match my expectation of what the data should look like (30 participants = 30 unique Ids). When I checked the dailyActivity and hourlyStep Ids, I saw overlap. The queries used for these steps are saved in the [FitBit Data folder](https://github.com/kyliebalotin/Coursera-Case-Study---Bellabeat/tree/main/Analysis/FitBit_Data). 
 
 ## Analysis
-There is a folder within this responsitory storing the analysis process for the project's data. 
+There is a folder within this repository storing the analysis process for the project's data. 
 
 ## Key Findings
 

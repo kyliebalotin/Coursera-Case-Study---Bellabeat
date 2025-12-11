@@ -1,7 +1,7 @@
 ---
 title: "BigIdeas_Analysis"
 author: "Kylie Balotin"
-date: "2025-12-09"
+date: "2025-12-11"
 output: html_document
 ---
 
@@ -31,7 +31,7 @@ library(gridExtra)
 Then I will load the dataset to be analyzed. 
 
 ```{r data}
-big_ideas_data <- read_excel("/Users/kyliebalotin/Downloads/BigIdeasLab_DHL_Survey_Study_1.xlsx", sheet = "Clean")
+big_ideas_data <- read_excel("/Users/kyliebalotin/Github/Coursera-Case-Study---Bellabeat/Analysis/Big_Ideas_Analysis/BigIdeasLab_DHL_Survey_Study_1.xlsx", sheet = "Clean")
 
 ```
 
@@ -167,8 +167,11 @@ count_eth <- rep(0, length(eth_simp))
 count_eth_f <- rep(0, length(eth_simp))
 
 for (i in 1:length(eth_simp)) {
-    count_eth[i] <- sum(big_ideas_data_org[i+46], na.rm=TRUE)
-    count_eth_f[i] <- sum(big_ideas_data_org_f[i+46], na.rm=TRUE)
+    x <- i+45
+    print(x)
+    count_eth[i] <- sum(big_ideas_data_org[x], na.rm=TRUE)
+    print(x)
+    #count_eth_f[i] <- sum(big_ideas_data_org_f[i+46], na.rm=TRUE)
 }
 
 count_ethnicity <- data.frame(eth_simp, count_eth, count_eth_f)
