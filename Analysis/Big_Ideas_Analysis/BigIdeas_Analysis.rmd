@@ -14,7 +14,6 @@ knitr::opts_chunk$set(echo = TRUE)
 This file is to document the analysis process for the Big Ideas Lab survey data. 
 
 First I will load the necessary packages for analysis.
-
 ```{r install, include=FALSE}
 #If packages are not installed, run following lines to install the packages
 # install.packages("tidyverse")
@@ -29,15 +28,13 @@ library(gridExtra)
 ```
 
 Then I will load the dataset to be analyzed. 
-
 ```{r data}
 big_ideas_data <- read_excel("/Users/kyliebalotin/Github/Coursera-Case-Study---Bellabeat/Analysis/Big_Ideas_Analysis/BigIdeasLab_DHL_Survey_Study_1.xlsx", sheet = "Clean")
 
 ```
 
-Sorting and rearranging some of the dataset
-
-```{r}
+In the following code section, I'm combining the separate columns of the different phone and wearable types into a single column (each) that contains a string of the name of the device manufacturer. 
+```{r comb}
 #Changing how the data is organized
 #initiate some of the new column names
 phone_type <- rep("phone", (length(big_ideas_data$Gender)))
@@ -92,9 +89,7 @@ big_ideas_data_org <- data.frame(big_ideas_data, phone_type, wearable_type)
 #View(big_ideas_data_org)
 ```
 
-
-Subset data by gender for analysis
-
+Next, I'm creating some subsets of the data (based on gender). Bellabeat's primary consumer demographic is women, so I want to make sure I am able to capture the results specifically for survey participants who identify as female.
 ```{r subsets, include=FALSE}
 #Sort by Gender
 #Creates a subset of the data that is only the female survey participants 
@@ -106,10 +101,15 @@ big_ideas_data_org_m <- subset.data.frame(big_ideas_data_org, Gender=="Male")
 #Creates a subset of the data that is everyone but the female survey participants 
 big_ideas_data_org_nf <- anti_join(big_ideas_data_org, big_ideas_data_org_f)
 
+#Listing out the different column names for the dataset for future use
 colnames(big_ideas_data_org)
 
 ```
 
+
+The next coding section documents the different calculations I performed on the dataset. I first look at the demographic information about the survey participants to have a better idea about how the sample population might relate to the larger population. 
+
+Then I looked at the survey's responses regarding how participants are using their smart phones and wearables (ex: fitness tracking, sleep monitoring, etc) and reasons why the participants might not own a wearable. I have performed these calculations for the whole survey sample population and the subset of the sample population that identify as female. 
 ```{r calculations}
 #Find out some demographic information about the survey participants
 
@@ -117,7 +117,7 @@ colnames(big_ideas_data_org)
 unique_g <- unique(big_ideas_data_org$Gender)
 count_unique_g <- rep(0, length(unique_g))
 for (i in 1:length(unique_g)) {
-    count_unique_g[i] <- sum(big_ideas_data_org$Gender==unique_g[i])
+    count_unique_g[i] <- sum(big_ideas_data_org$Gender==unique_g[i], na.rm=TRUE)
 }
 count_g <- data.frame(unique_g, count_unique_g)
 count_g
@@ -168,10 +168,8 @@ count_eth_f <- rep(0, length(eth_simp))
 
 for (i in 1:length(eth_simp)) {
     x <- i+45
-    print(x)
     count_eth[i] <- sum(big_ideas_data_org[x], na.rm=TRUE)
-    print(x)
-    #count_eth_f[i] <- sum(big_ideas_data_org_f[i+46], na.rm=TRUE)
+    count_eth_f[i] <- sum(big_ideas_data_org_f[x], na.rm=TRUE)
 }
 
 count_ethnicity <- data.frame(eth_simp, count_eth, count_eth_f)
@@ -236,7 +234,7 @@ count_activity_wear_f
     
 ```
 
-
+Finally, I plot the different calculations in order to show my findings visually. 
 ```{r plots}
 #Demographic information
 #Pie Chart of Participants' Genders
@@ -245,11 +243,37 @@ demographic_g <- ggplot(count_g, aes(x="", y=count_unique_g, fill=unique_g)) + g
 #Pie Chart of Participants' Ages
 demographic_age <- ggplot(count_age, aes(x="", y=count_unique_age, fill=unique_age)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Age Group") + scale_fill_brewer(palette = "RdYlBu")
 
-grid.arrange(demographic_g, demographic_age, nrow=1, top="Demographic Information About Survey Participants")
+#Female population age demographics
+demographic_age_f <- ggplot(count_age, aes(x="", y=count_unique_age_f, fill=unique_age)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Age Group") + scale_fill_brewer(palette = "RdYlBu")
+
+#Level of Education demographics
+demographic_edu <- ggplot(count_edu, aes(x="", y=count_unique_edu, fill=unique_edu)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Level of Education") + scale_fill_brewer(palette = "RdYlBu")
+
+#Female population edu demographics
+demographic_edu_f <- ggplot(count_edu, aes(x="", y=count_unique_edu_f, fill=unique_edu)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Level of Education") + scale_fill_brewer(palette = "RdYlBu")
+
+#Employment Status demographics
+demographic_emp <- ggplot(count_emp, aes(x="", y=count_unique_emp, fill=unique_emp)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Employment Status") + scale_fill_brewer(palette = "RdYlBu")
+
+#Female population employment status demographics
+demographic_emp_f <- ggplot(count_emp, aes(x="", y=count_unique_emp_f, fill=unique_emp)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Employment Status") + scale_fill_brewer(palette = "RdYlBu")
+
+#Race/ethnicity demographics
+demographic_eth <- ggplot(count_ethnicity, aes(x="", y=count_eth, fill=eth_simp)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Race/Ethnicity") + scale_fill_brewer(palette = "RdYlBu")
+
+#Female population employment status demographics
+demographic_eth_f <- ggplot(count_ethnicity, aes(x="", y=count_eth_f, fill=eth_simp)) + geom_bar(stat="identity", width=1) + coord_polar("y", start=0) + theme_void() + labs(fill="Race/Ethnicity") + scale_fill_brewer(palette = "RdYlBu")
+
+grid.arrange(demographic_age, demographic_age_f, 
+             demographic_edu, demographic_edu_f, 
+             demographic_emp, demographic_emp_f, 
+             demographic_eth, demographic_eth_f,
+             nrow=4, ncol=2,
+             top="Demographic Information About Survey Participants", bottom = "Plots in left column represent the whole survey participant population; plots in the right column represent survey participants who identify as female")
 
 #Breakdown of Phone Ownership by Gender
 #Creates a plot of phone ownership where each plot is a different gender
-Plot <- ggplot(big_ideas_data_org, aes(x=phone_type)) + geom_bar() + labs(x= "Type of Phone Owned", y="Number of Phones Owned", title = "Number of Phone Types Owned") + theme_classic() + facet_wrap(~Gender)
+# Plot <- ggplot(big_ideas_data_org, aes(x=phone_type)) + geom_bar() + labs(x= "Type of Phone Owned", y="Number of Phones Owned", title = "Number of Phone Types Owned") + theme_classic() + facet_wrap(~Gender)
 
 Plot1 <- ggplot(big_ideas_data_org, aes(x=phone_type, group=Gender, fill=Gender)) + geom_bar() + labs(x= "Type of Phone Owned", y="Number of Phones Owned", title = "Number of Phone Types Owned") + theme_classic()
 Plot2 <- ggplot(big_ideas_data_org_f, aes(x=phone_type)) + geom_bar() + labs(x= "Type of Phone Owned", y="Number of Phones Owned", title = "Number of Phone Types Owned (Females)") + theme_classic()
