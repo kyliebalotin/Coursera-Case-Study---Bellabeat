@@ -44,8 +44,23 @@ Then I performed the following cleaning steps in Google Sheets:
 After uploading the datasets into BigQuery, I checked all the datasets for the number of unique Id values. I noticed that the dailyActivity and hourlySteps datasets have more unique Ids than expected (>30). This decreases the reliability of the data and leads me to have some skepticism about the quality of the data. I did not delete any data, but I am aware this does not match my expectation of what the data should look like (30 participants = 30 unique Ids). When I checked the dailyActivity and hourlyStep Ids, I saw overlap. The queries used for these steps are saved in the [FitBit Data folder](https://github.com/kyliebalotin/Coursera-Case-Study---Bellabeat/tree/main/Analysis/FitBit_Data). 
 
 ## Analysis
-There is a folder within this repository storing the analysis process for the project's data. The Big Ideas survey was analyzed in R, and the documentation for this analysis and subsequent visualizations can be found in the file [BigIdeas_Analysis.html](https://github.com/kyliebalotin/Coursera-Case-Study---Bellabeat/blob/main/Analysis/Big_Ideas_Analysis/BigIdeas_Analysis.pdf). The FitBit Fitness Tracker data was analyzed using a combination of SQL and R. 
+There is a folder within this repository storing the analysis process for the project's data. The Big Ideas survey was analyzed in R, and the documentation for this analysis and subsequent visualizations can be found in the file [BigIdeas_Analysis.html](https://github.com/kyliebalotin/Coursera-Case-Study---Bellabeat/blob/main/Analysis/Big_Ideas_Analysis/BigIdeas_Analysis.pdf). The FitBit Fitness Tracker data was analyzed using a combination of SQL and Google Sheets. 
 
 ## Key Findings
+Looking first at the Big Ideas Lab's survey:
+- The majority of the participants own a smart phone, but only about half of the participants own a wearable. 
+- Among the whole survey participant population, primary reason why participants do not own a wearable is the price (i.e. wearables are too expensive), followed closely by participants not being interested in tracking activity and participants do not have a specific reason why they don't own one. 
+- The main reason why participants use wearable devices is for fitness and workout monitoring, followed by communication and health tracking, respectively. Sleep monitoring, health tracking, and communication are the top three secondary uses of wearables, respectively. In terms of not being considered a main use of a wearable, fashion was ranked the highest. Music/audiobooks/podcasts, navigation, and other apps are not common features of wearables. 
+- All of these results do not change when the survey population is filtered to only female-identifying participants.
 
+Based off this information, I then looked into how the Fitbit users from the FitBit Fitness Tracking dataset were using their devices:
+- Every participant was tracking their steps and activity times and distances. About 75% of participants were tracking their sleep, and about 50% of participants were tracking their heart rate.
+- Between March 12-April 11, 2016, participants tracking their activity did so for about half of the month, but this bumped up to almost every day between April 12-May 12, 2016. Between April 12-May 12, 2016, participants tracked their sleep for about half of the month. 
+- The FitBit Fitness Tracking dataset seems to match some of the key findings of the Big Ideas's survey in that fitness/activity monitoring is the major use of smart wearable devices, with sleep monitoring being a secondary function of wearable devices. 
+
+## Recommendations to the Bellabeta executive team
+1. Fitness/activity and sleep monitoring are the top reason why customers wear devices like the Bellabeat Time. Marketing should highlight on functions such as step tracking, activity monitoring, and sleep monitoring in their campaigns. 
+2. I would move slightly away from highlighting the fashion aspect of Bellabeat Time in marketing campaigns as this was one of the least important factors for why a customer would wear a smart health device. 
+3. It may be worth doing a price comparison between Bellabeat Time and its competitors like the Apple Watch and FitBit. It seems like Time is less expensive than its competitors, and the high price tag was listed as a major reason why a customer might not purchase a wearable device. 
+4. I would recommend validating these results with any internal data that looks at how Bellabeat customers are using Bellabeat's products. 
 
