@@ -1,5 +1,5 @@
 # Coursera-Case-Study---Bellabeat
-This repository will contain information about how I approached the Bellabeat Case Study for Coursera Google Data Analytics Certificate. 
+This repository contains information about how I approached the Bellabeat Case Study for Coursera Google Data Analytics Certificate. 
 
 ## Purpose 
 In this case study, I was asked to focus on one of Bellabeat's products in order to see how consumers use smart devices. The results of this study would be presented to the company's executive team and used to guide the company's marketing strategies.
