@@ -52,9 +52,12 @@ There is a folder within this repository storing the analysis process for the pr
 ## Key Findings
 Looking first at the Big Ideas Lab's survey:
 - The majority of the participants own a smart phone, but only about half of the participants own a wearable.
-![](https://github.com/kyliebalotin/Coursera-Case-Study---Bellabeat/blob/main/Images/BI_ownership_plots.png)
-- Among the whole survey participant population, primary reason why participants do not own a wearable is the price (i.e. wearables are too expensive), followed closely by participants not being interested in tracking activity and participants do not have a specific reason why they don't own one. 
-- The main reason why participants use wearable devices is for fitness and workout monitoring, followed by communication and health tracking, respectively. Sleep monitoring, health tracking, and communication are the top three secondary uses of wearables, respectively. In terms of not being considered a main use of a wearable, fashion was ranked the highest. Music/audiobooks/podcasts, navigation, and other apps are not common features of wearables. 
+![Phone and Wearable Ownership](https://github.com/kyliebalotin/Coursera-Case-Study---Bellabeat/blob/main/Images/BI_ownership_plots.png)
+- Among the whole survey participant population, primary reason why participants do not own a wearable is the price (i.e. wearables are too expensive), followed closely by participants not being interested in tracking activity and participants do not have a specific reason why they don't own one.
+![Reasons Why Participants Don't Own a Wearable](https://github.com/kyliebalotin/Coursera-Case-Study---Bellabeat/blob/main/Images/BI_notown_plots.png)
+- The main reason why participants use wearable devices is for fitness and workout monitoring, followed by communication and health tracking, respectively. Sleep monitoring, health tracking, and communication are the top three secondary uses of wearables, respectively. In terms of not being considered a main use of a wearable, fashion was ranked the highest. Music/audiobooks/podcasts, navigation, and other apps are not common features of wearables.
+![Reasons Why Participants Use Wearables (Whole Survey Population)](https://github.com/kyliebalotin/Coursera-Case-Study---Bellabeat/blob/main/Images/BI_reasons-whole_plots.png)
+![Reasons Why Participants Use Wearables (Female-Identifying Survey Population)](https://github.com/kyliebalotin/Coursera-Case-Study---Bellabeat/blob/main/Images/BI_reasons-female_plots.png)
 - All of these results do not change when the survey population is filtered to only female-identifying participants.
 
 Based off this information, I then looked into how the Fitbit users from the FitBit Fitness Tracking dataset were using their devices:
