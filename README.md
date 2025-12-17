@@ -62,7 +62,6 @@ Looking first at the Big Ideas Lab's survey:
 
 Based off this information, I then looked into how the Fitbit users from the FitBit Fitness Tracking dataset were using their devices:
 - Every participant was tracking their steps and activity times and distances. About 75% of participants were tracking their sleep, and about 50% of participants were tracking their heart rate.
-- Between March 12-April 11, 2016, participants tracking their activity did so for about half of the month, but this bumped up to almost every day between April 12-May 12, 2016. Between April 12-May 12, 2016, participants tracked their sleep for about half of the month.
 
 | Data Set | March-April | April-May | Percent Tracking |
 | :--------: | :-----------: | :---------: | :----------------: |
@@ -75,6 +74,7 @@ Based off this information, I then looked into how the Fitbit users from the Fit
 
 *More participants found than expected (sample size is 30 participants)
 
+- Between March 12-April 11, 2016, participants tracking their activity did so for about half of the month, but this bumped up to almost every day between April 12-May 12, 2016. Between April 12-May 12, 2016, participants tracked their sleep for about half of the month.
 - The FitBit Fitness Tracking dataset seems to match some of the key findings of the Big Ideas's survey in that fitness/activity monitoring is the major use of smart wearable devices, with sleep monitoring being a secondary function of wearable devices.
 
 ## Recommendations to the Bellabeta executive team
