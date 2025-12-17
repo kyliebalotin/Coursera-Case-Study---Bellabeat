@@ -43,6 +43,7 @@ Then I performed the following cleaning steps in Google Sheets:
 - Trimmed Whitespace in all chosen datasets
 - Filtered looking for blank cells. I only found blank cells in the dailyActivity's column Fat, which I do not plan to use in the Analysis step. 
 - Converted the Date/Time columns of the datasets to Timestamps as I encountered issues when initially trying to upload the data into BigQuery.
+- Removed the 4/12/2016 logs from the Fitabase Data 3.12.16-4.11.16 datasets as this day is outside the time peroid. I was able to filter for this date and then deleted any rows containing data from this date. 
 
 After uploading the datasets into BigQuery, I checked all the datasets for the number of unique Id values. I noticed that the dailyActivity and hourlySteps datasets have more unique Ids than expected (>30). This decreases the reliability of the data and leads me to have some skepticism about the quality of the data. I did not delete any data, but I am aware this does not match my expectation of what the data should look like (30 participants = 30 unique Ids). When I checked the dailyActivity and hourlyStep Ids, I saw overlap. The queries used for these steps are saved in the [FitBit Data folder](https://github.com/kyliebalotin/Coursera-Case-Study---Bellabeat/tree/main/Analysis/FitBit_Data). 
 
