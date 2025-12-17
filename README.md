@@ -64,8 +64,8 @@ Based off this information, I then looked into how the Fitbit users from the Fit
 - Every participant was tracking their steps and activity times and distances. About 75% of participants were tracking their sleep, and about 50% of participants were tracking their heart rate.
 
 | Data Set | March-April | April-May | Percent Tracking |
-| -------- | :-----------: | :---------: | ----------------: |
-| Daily Activity | Content Cell  | Content Cell  | Content Cell  |
+| :--------: | :-----------: | :---------: | :----------------: |
+| Daily Activity | 35*  | Content Cell  | Content Cell  |
 | Hourly Steps | Content Cell  | Content Cell  | Content Cell  |
 | Minute Sleep | Content Cell  | Content Cell  | Content Cell  |
 | Sleep Day | Content Cell  | Content Cell  | Content Cell  |
