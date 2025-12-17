@@ -59,9 +59,17 @@ Looking first at the Big Ideas Lab's survey:
 ![Reasons Why Participants Use Wearables (Whole Survey Population)](https://github.com/kyliebalotin/Coursera-Case-Study---Bellabeat/blob/main/Images/BI_reasons-whole_plots.png)
 ![Reasons Why Participants Use Wearables (Female-Identifying Survey Population)](https://github.com/kyliebalotin/Coursera-Case-Study---Bellabeat/blob/main/Images/BI_reasons-female_plots.png)
 - All of these results do not change when the survey population is filtered to only female-identifying participants.
-
+|    Data Set    | March-April | April-May | Percent Tracking |
+| -------------- | ----------- | --------- | ---------------- |
+| Daily Activity | Content Cell  | Content Cell  | Content Cell  |
+|  Hourly Steps  | Content Cell  | Content Cell  | Content Cell  |
+|  Minute Sleep  | Content Cell  | Content Cell  | Content Cell  |
+|    Sleep Day   | Content Cell  | Content Cell  | Content Cell  |
+|   Heart Rate   | Content Cell  | Content Cell  | Content Cell  |
+|   Weight Log   | Content Cell  | Content Cell  | Content Cell  |
 Based off this information, I then looked into how the Fitbit users from the FitBit Fitness Tracking dataset were using their devices:
 - Every participant was tracking their steps and activity times and distances. About 75% of participants were tracking their sleep, and about 50% of participants were tracking their heart rate.
+
 - Between March 12-April 11, 2016, participants tracking their activity did so for about half of the month, but this bumped up to almost every day between April 12-May 12, 2016. Between April 12-May 12, 2016, participants tracked their sleep for about half of the month. 
 - The FitBit Fitness Tracking dataset seems to match some of the key findings of the Big Ideas's survey in that fitness/activity monitoring is the major use of smart wearable devices, with sleep monitoring being a secondary function of wearable devices. 
 
