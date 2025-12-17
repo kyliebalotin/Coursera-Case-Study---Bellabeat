@@ -61,7 +61,7 @@ Looking first at the Big Ideas Lab's survey:
 - All of these results do not change when the survey population is filtered to only female-identifying participants.
 
 Based off this information, I then looked into how the Fitbit users from the FitBit Fitness Tracking dataset were using their devices:
-- Every participant was tracking their steps and activity times and distances. About 75% of participants were tracking their sleep, and about 50% of participants were tracking their heart rate.
+- Every participant was tracking their steps and activity times and distances. Over 75% of participants were tracking their sleep, and less than 50% of participants were tracking their heart rate.
 
 | Data Set | March-April | April-May | Percent Tracking |
 | :--------: | :-----------: | :---------: | :----------------: |
