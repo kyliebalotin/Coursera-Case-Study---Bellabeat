@@ -3,8 +3,8 @@ title: "BigIdeas_Analysis"
 author: "Kylie Balotin"
 date: "2025-12-11"
 output:
-  pdf_document: default
   html_document: default
+  pdf_document: default
 ---
 
 ```{r setup, include=FALSE, echo=FALSE}
